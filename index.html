@@ -1,36 +1,90 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Крипто-Транзакция</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Crypto Transaction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .expired {
+            color: red;
+            font-weight: bold;
+        }
+        .timer {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Крипто-Транзакция</h1>
-        <div class="form-group">
-            <label for="wallet">Криптокошелек:</label>
-            <input type="text" id="wallet" placeholder="Введите криптокошелек" required>
-        </div>
-        <div class="form-group">
-            <label for="currency">Криптовалюта:</label>
-            <input type="text" id="currency" placeholder="Введите валюту (например, USDT)" required>
-        </div>
-        <div class="form-group">
-            <label for="crypto_count">Количество криптовалюты:</label>
-            <input type="number" id="crypto_count" placeholder="Введите количество" required step="0.01">
-        </div>
-        <div class="form-group">
-            <label for="comment">Комментарий:</label>
-            <input type="text" id="comment" placeholder="Введите комментарий" required>
-        </div>
-        <button onclick="generateLink()">Сгенерировать ссылку</button>
-
-        <div class="result" id="result"></div>
+    <div class="container" id="content">
+        <h1>Crypto Payment Details</h1>
+        <p><strong>Wallet:</strong> <span id="wallet"></span></p>
+        <p><strong>Currency:</strong> <span id="currency"></span></p>
+        <p><strong>Amount:</strong> <span id="crypto_count"></span></p>
+        <p><strong>Comment:</strong> <span id="comment"></span></p>
         <div class="timer" id="timer"></div>
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            return {
+                wallet: params.get('wallet') || 'N/A',
+                currency: params.get('currency') || 'N/A',
+                crypto_count: params.get('crypto_count') || 'N/A',
+                comment: params.get('comment') || 'N/A'
+            };
+        }
+
+        function startTimer(duration, display) {
+            let timer = duration, minutes, seconds;
+            const interval = setInterval(() => {
+                minutes = Math.floor(timer / 60);
+                seconds = timer % 60;
+
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
+
+                display.textContent = `Time remaining: ${minutes}:${seconds}`;
+
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    document.getElementById('content').innerHTML = '<p class="expired">Time to complete the payment has expired.</p>';
+                }
+            }, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = getUrlParams();
+
+            document.getElementById('wallet').textContent = params.wallet;
+            document.getElementById('currency').textContent = params.currency;
+            document.getElementById('crypto_count').textContent = params.crypto_count;
+            document.getElementById('comment').textContent = params.comment;
+
+            const timerDuration = 60 * 60; // 1 hour in seconds
+            const timerDisplay = document.getElementById('timer');
+            startTimer(timerDuration, timerDisplay);
+        });
+    </script>
 </body>
 </html>
