@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Крипто-Транзакция</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Крипто-Транзакция</h1>
+        <div class="form-group">
+            <label for="wallet">Криптокошелек:</label>
+            <input type="text" id="wallet" placeholder="Введите криптокошелек" required>
+        </div>
+        <div class="form-group">
+            <label for="currency">Криптовалюта:</label>
+            <input type="text" id="currency" placeholder="Введите валюту (например, USDT)" required>
+        </div>
+        <div class="form-group">
+            <label for="crypto_count">Количество криптовалюты:</label>
+            <input type="number" id="crypto_count" placeholder="Введите количество" required step="0.01">
+        </div>
+        <div class="form-group">
+            <label for="comment">Комментарий:</label>
+            <input type="text" id="comment" placeholder="Введите комментарий" required>
+        </div>
+        <button onclick="generateLink()">Сгенерировать ссылку</button>
+
+        <div class="result" id="result"></div>
+        <div class="timer" id="timer"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
