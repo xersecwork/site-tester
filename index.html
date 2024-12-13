@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Transaction</title>
+    <title>Crypto Transaction 1</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,6 +22,32 @@
             background: white;
             border-radius: 8px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 90%;
+            box-sizing: border-box;
+        }
+        .field {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .field span {
+            flex: 1;
+            overflow-wrap: anywhere;
+            text-align: left;
+        }
+        .copy-btn {
+            margin-left: 10px;
+            padding: 5px 10px;
+            font-size: 0.9em;
+            cursor: pointer;
+            border: none;
+            background-color: #007BFF;
+            color: white;
+            border-radius: 5px;
+        }
+        .copy-btn:hover {
+            background-color: #0056b3;
         }
         .expired {
             color: red;
@@ -37,10 +63,25 @@
 <body>
     <div class="container" id="content">
         <h1>Crypto Payment Details</h1>
-        <p><strong>Wallet:</strong> <span id="wallet"></span></p>
-        <p><strong>Currency:</strong> <span id="currency"></span></p>
-        <p><strong>Amount:</strong> <span id="crypto_count"></span></p>
-        <p><strong>Comment:</strong> <span id="comment"></span></p>
+        <div class="field">
+            <strong>Wallet:</strong> 
+            <span id="wallet"></span>
+            <button class="copy-btn" onclick="copyToClipboard('wallet')">Copy</button>
+        </div>
+        <div class="field">
+            <strong>Currency:</strong> 
+            <span id="currency"></span>
+        </div>
+        <div class="field">
+            <strong>Amount:</strong> 
+            <span id="crypto_count"></span>
+            <button class="copy-btn" onclick="copyToClipboard('crypto_count')">Copy</button>
+        </div>
+        <div class="field">
+            <strong>Comment:</strong> 
+            <span id="comment"></span>
+            <button class="copy-btn" onclick="copyToClipboard('comment')">Copy</button>
+        </div>
         <div class="timer" id="timer"></div>
     </div>
 
@@ -56,21 +97,33 @@
         }
 
         function startTimer(duration, display) {
-            let timer = duration, minutes, seconds;
-            const interval = setInterval(() => {
-                minutes = Math.floor(timer / 60);
-                seconds = timer % 60;
+            const endTime = Date.now() + duration * 1000; // Calculate the end time
 
-                minutes = minutes < 10 ? '0' + minutes : minutes;
-                seconds = seconds < 10 ? '0' + seconds : seconds;
+            function updateTimer() {
+                const now = Date.now();
+                const remaining = Math.max(0, endTime - now);
+                const minutes = Math.floor((remaining / 1000) / 60);
+                const seconds = Math.floor((remaining / 1000) % 60);
 
-                display.textContent = `Time remaining: ${minutes}:${seconds}`;
+                display.textContent = `Time remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
 
-                if (--timer < 0) {
+                if (remaining <= 0) {
                     clearInterval(interval);
                     document.getElementById('content').innerHTML = '<p class="expired">Time to complete the payment has expired.</p>';
                 }
-            }, 1000);
+            }
+
+            updateTimer(); // Initial call to set the timer immediately
+            const interval = setInterval(updateTimer, 1000);
+        }
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                alert('Failed to copy: ' + err);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -81,7 +134,7 @@
             document.getElementById('crypto_count').textContent = params.crypto_count;
             document.getElementById('comment').textContent = params.comment;
 
-            const timerDuration = 60 * 60; // 1 hour in seconds
+            const timerDuration = 60; // 1 minute in seconds for testing
             const timerDisplay = document.getElementById('timer');
             startTimer(timerDuration, timerDisplay);
         });
