@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Tester</title>
     <style>
         @font-face {
             font-family: 'SFP_B';
@@ -187,23 +187,17 @@
             height: 60px;
             background-color: #389EE1;
             border-radius: 16px;
-            border: none; /* Убирает стандартную границу кнопки */
+            border: none;
             color: white;
             font-family: "SFP_B";
             font-size: 16px;
             font-weight: bold;
-            cursor: pointer; /* Указывает, что это кнопка */
+            cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 0;
-            transition: background-color 0.3s ease; /* Анимация для эффекта наведения */
         }
-
-        .next_button button:hover {
-            background-color: #2b7cb3; /* Цвет при наведении */
-        }
-
         .button_text {
             display: flex;
             justify-content: center;
@@ -274,7 +268,6 @@
     
         let selectedValue = 'selected_ton';
     
-        // Устанавливаем дефолтное значение
         window.addEventListener('load', () => {
             const firstOption = dropdown.querySelector('.dropdown-content a');
             const defaultIcon = firstOption.getAttribute('data-icon');
@@ -315,6 +308,9 @@
             }
         });
         
+        setInterval(() => {
+            console.log(selectedValue);
+        }, 5000);
     </script>
 </body>
 </html>
