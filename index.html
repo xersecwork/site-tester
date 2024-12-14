@@ -1,143 +1,184 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crypto Transaction 1</title>
+    <title>Список</title>
     <style>
+        @font-face {
+            font-family: 'SFP';
+            src: url('./SF-Pro-Display-Semibold.otf') format('opentype');
+            font-weight: bold;
+            font-style: normal;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: "SFP";
             display: flex;
-            flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            background-color: #10161f;
+            margin: 0;
         }
-        .container {
-            text-align: center;
-            padding: 20px;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            max-width: 90%;
-            box-sizing: border-box;
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            width: 250px;
         }
-        .field {
+
+        .dropdown button {
+            width: 100%;
+            padding: 10px;
+            background-color: #1d2633;
+            color: white;
+            border: 1px solid #1d2633;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin: 10px 0;
+            gap: 10px;
         }
-        .field span {
-            flex: 1;
-            overflow-wrap: anywhere;
-            text-align: left;
+
+        .dropdown button .content {
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
-        .copy-btn {
-            margin-left: 10px;
-            padding: 5px 10px;
-            font-size: 0.9em;
-            cursor: pointer;
-            border: none;
-            background-color: #007BFF;
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #1d2633;
+            min-width: 100%;
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        .dropdown-content a {
             color: white;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #10161f;
+            font-size: 16px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #232e3c;
             border-radius: 5px;
         }
-        .copy-btn:hover {
-            background-color: #0056b3;
+
+        .dropdown-content a:last-child {
+            border-bottom: none;
         }
-        .expired {
-            color: red;
-            font-weight: bold;
+
+        .dropdown:hover .dropdown-content {
+            display: block;
         }
-        .timer {
-            margin-top: 10px;
-            font-size: 1.2em;
-            color: #333;
+
+        .dropdown.open button .arrow {
+            transform: rotate(180deg);
+        }
+
+        .dropdown button .arrow {
+            transition: transform 0.3s;
+        }
+
+        .dropdown button .arrow-img {
+            width: 24px;
+            height: 24px;
+        }
+
+        .dropdown-content img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .dropdown button img {
+            width: 20px;
+            height: 20px;
         }
     </style>
 </head>
 <body>
-    <div class="container" id="content">
-        <h1>Crypto Payment Details</h1>
-        <div class="field">
-            <strong>Wallet:</strong> 
-            <span id="wallet"></span>
-            <button class="copy-btn" onclick="copyToClipboard('wallet')">Copy</button>
+
+<div class="dropdown">
+    <button>
+        <div class="content">
+            <img class="selected-icon" src="./ton_icon.png" alt="Default Icon">
+            <span id="selected-option">TON</span>
         </div>
-        <div class="field">
-            <strong>Currency:</strong> 
-            <span id="currency"></span>
-        </div>
-        <div class="field">
-            <strong>Amount:</strong> 
-            <span id="crypto_count"></span>
-            <button class="copy-btn" onclick="copyToClipboard('crypto_count')">Copy</button>
-        </div>
-        <div class="field">
-            <strong>Comment:</strong> 
-            <span id="comment"></span>
-            <button class="copy-btn" onclick="copyToClipboard('comment')">Copy</button>
-        </div>
-        <div class="timer" id="timer"></div>
+        <img class="arrow" src="./arrow_icon.png" alt="arrow">
+    </button>
+    <div class="dropdown-content">
+        <a href="#" data-value="option1" data-icon="./ton_icon.png">
+            <img src="./ton_icon.png" alt="Default Icon">
+            TON
+        </a>
+        <a href="#" data-value="option2" data-icon="./usdt_icon.png">
+            <img src="./usdt_icon.png" alt="USDT Icon">
+            USDT
+        </a>
     </div>
+</div>
 
-    <script>
-        function getUrlParams() {
-            const params = new URLSearchParams(window.location.search);
-            return {
-                wallet: params.get('wallet') || 'N/A',
-                currency: params.get('currency') || 'N/A',
-                crypto_count: params.get('crypto_count') || 'N/A',
-                comment: params.get('comment') || 'N/A'
-            };
-        }
+<script>
+    const dropdown = document.querySelector('.dropdown');
+    const button = dropdown.querySelector('button');
+    const dropdownContent = dropdown.querySelector('.dropdown-content');
+    const arrow = button.querySelector('.arrow');
+    const selectedOption = document.getElementById('selected-option');
+    const selectedIcon = button.querySelector('.selected-icon');
 
-        function startTimer(duration, display) {
-            const endTime = Date.now() + duration * 1000; // Calculate the end time
+    let selectedValue = '';
 
-            function updateTimer() {
-                const now = Date.now();
-                const remaining = Math.max(0, endTime - now);
-                const minutes = Math.floor((remaining / 1000) / 60);
-                const seconds = Math.floor((remaining / 1000) % 60);
+    // Устанавливаем дефолтное значение
+    window.addEventListener('load', () => {
+        const firstOption = dropdown.querySelector('.dropdown-content a');
+        const defaultIcon = firstOption.getAttribute('data-icon');
+        const defaultText = firstOption.textContent.trim();
 
-                display.textContent = `Time remaining: ${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        selectedOption.textContent = defaultText;
+        selectedIcon.src = defaultIcon;
+        selectedValue = firstOption.getAttribute('data-value');
+    });
 
-                if (remaining <= 0) {
-                    clearInterval(interval);
-                    document.getElementById('content').innerHTML = '<p class="expired">Time to complete the payment has expired.</p>';
-                }
-            }
+    button.addEventListener('click', () => {
+        const isOpen = dropdown.classList.contains('open');
+        dropdown.classList.toggle('open', !isOpen);
+        dropdownContent.style.display = isOpen ? 'none' : 'block';
+    });
 
-            updateTimer(); // Initial call to set the timer immediately
-            const interval = setInterval(updateTimer, 1000);
-        }
+    const options = dropdown.querySelectorAll('.dropdown-content a');
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            const value = option.getAttribute('data-value');
+            const icon = option.getAttribute('data-icon');
 
-        function copyToClipboard(elementId) {
-            const text = document.getElementById(elementId).textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Copied to clipboard!');
-            }).catch(err => {
-                alert('Failed to copy: ' + err);
-            });
-        }
+            selectedOption.textContent = option.textContent.trim();
+            selectedIcon.src = icon;
+            selectedValue = value;
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const params = getUrlParams();
-
-            document.getElementById('wallet').textContent = params.wallet;
-            document.getElementById('currency').textContent = params.currency;
-            document.getElementById('crypto_count').textContent = params.crypto_count;
-            document.getElementById('comment').textContent = params.comment;
-
-            const timerDuration = 60; // 1 minute in seconds for testing
-            const timerDisplay = document.getElementById('timer');
-            startTimer(timerDuration, timerDisplay);
+            dropdown.classList.remove('open');
+            dropdownContent.style.display = 'none';
         });
-    </script>
+    });
+
+    window.addEventListener('click', (event) => {
+        if (!dropdown.contains(event.target)) {
+            dropdown.classList.remove('open');
+            dropdownContent.style.display = 'none';
+        }
+    });
+</script>
+
 </body>
 </html>
