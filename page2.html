@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 2</title>
+    <style>
+        @font-face {
+            font-family: 'SFP_B';
+            src: url('./SF-Pro-Display-Semibold.otf') format('opentype');
+            font-weight: bold;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'SFP_M';
+            src: url('./SF-Pro-Display-Medium.otf') format('opentype');
+            font-weight: medium;
+            font-style: normal;
+        }
+        body {
+            background-color: #10161F;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            width: 90%;
+            max-width: 500px;
+            min-width: 300px;
+            height: 280px;
+            margin-top: 100px;
+            background-color: #1D2633;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .top_text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .block_name {
+            font-family: "SFP_B";
+            color: white;
+            font-size: 20px;
+            margin-top: -10px;
+            letter-spacing: 0.6px;
+        }
+        .order_block_paid {
+            background-color: #1D2633;
+            font-family: "SFP_M";
+            color:#8A94A3;
+            width: 92%;
+            height: 43px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: -7px;
+        }
+        .currency_block {
+            background-color: #10161F;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .copy_block {
+            background-color: #10161F;
+            width: 50px;
+            height: 100%;
+            border-radius: 10px;
+            margin-left: 5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0; /* Запрещаем сжимание блока */
+        }
+        .copy_block button {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0;
+        }
+        .copy_block button img {
+            width: 24px;
+            object-fit: contain;
+        }
+        .subtext {
+            font-family: "SFP_M";
+            color: #8A94A3;
+            font-size: 12px;
+            text-align: left;
+            align-self: flex-start;
+            margin-left: 15px;
+            letter-spacing: 0.32px;
+            margin-top: -20px;
+            user-select: none;
+        }
+        .subtext_2 {
+            font-family: "SFP_M";
+            color: #8A94A3;
+            font-size: 12px;
+            text-align: left;
+            align-self: flex-start;
+            margin-left: 15px;
+            letter-spacing: 0.32px;
+            margin-top: -2px;
+            user-select: none;
+        }
+        .currency_name {
+            font-family: "SFP_M";
+            color: #8A94A3;
+            text-align: left;
+            font-size: 14px;
+            letter-spacing: 0.42px;
+            margin-left: 5px;
+            user-select: none;
+        }
+        .currency_count {
+            font-family: "SFP_M";
+            color: white;
+            text-align: left;
+            font-size: 16px;
+            letter-spacing: 0.42px;
+            margin-left: 10px;
+        }
+        .order_block_wallet {
+            background-color: #1D2633;
+            font-family: "SFP_M";
+            color: #8A94A3;
+            width: 92%;
+            height: 43px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: -7px;
+            position: relative;
+        }
+        .wallet_adress {
+            font-family: "SFP_M";
+            color: white;
+            text-align: left;
+            padding: 10px;
+            font-size: 16px;
+            letter-spacing: 0.42px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+        }
+        .wallet_block {
+            background-color: #10161F;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+        .wallet_adress p {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .order_block_comment {
+            background-color: #1D2633;
+            font-family: "SFP_M";
+            color: #8A94A3;
+            width: 92%;
+            height: 43px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: -7px;
+            position: relative;
+        }
+        .comment_block {
+            background-color: #10161F;
+            width: 100%;
+            height: 100%;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+        .comment {
+            font-family: "SFP_M";
+            color: white;
+            text-align: left;
+            padding: 10px;
+            font-size: 16px;
+            letter-spacing: 0.42px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            flex-grow: 1;
+        }
+        .footer {
+            color: #8A94A3;
+            font-family: "SFP_B";
+            font-size: 16px;
+            letter-spacing: 0.42px;
+            margin-top: 200px;
+        }
+        .ready_button {
+            width: 90%;
+            max-width: 500px;
+            min-width: 300px;
+            height: 50px;
+            margin-top: 100px;
+            background-color: #389EE1;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .ready_button_text {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-family: "SFP_M";
+            color: white;
+            font-size: 14px;
+            margin-top: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top_text">
+            <div class="block_name">
+                <p>Оплатите заказ</p>
+            </div>
+        </div>
+        <div class="subtext">
+            <p>К оплате:</p>
+        </div>
+        <div class="order_block_paid">
+            <div class="currency_block">
+                <div class="currency_count">
+                    <p>10.0000001</p>
+                </div>
+                <div class="currency_name">
+                    <p>TON</p>
+                </div>
+            </div>
+            <div class="copy_block">
+                <button>
+                    <div class="button_text">
+                        <span id="selected-option">
+                            <img src="/static/copy_icon.png" alt="Copy">
+                        </span>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div class="subtext_2">
+            <p>Адрес кошелька:</p>
+        </div>
+        <div class="order_block_wallet">
+            <div class="wallet_block">
+                <div class="wallet_adress">
+                    <p>UQA_GNiC3apTUL5HLPi3NAuFLmbK6fvPM_TFOk42LSbYGUxC</p>
+                </div>
+            </div>
+            <div class="copy_block">
+                <button>
+                    <div class="button_text">
+                        <span id="selected-option">
+                            <img src="/static/copy_icon.png" alt="Copy">
+                        </span>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div class="subtext_2">
+            <p>Комментарий:</p>
+        </div>
+        <div class="order_block_comment">
+            <div class="comment_block">
+                <div class="comment">
+                    <p>order_number</p>
+                </div>
+            </div>
+            <div class="copy_block">
+                <button>
+                    <div class="button_text">
+                        <span id="selected-option">
+                            <img src="/static/copy_icon.png" alt="Copy">
+                        </span>
+                    </div>
+                </button>
+            </div>
+        </div>   
+    </div>
+    <div class="ready_button">
+        <div class="ready_button_text">
+            <p>После оплаты ожидайте информацию в боте</p>
+        </div>
+    </div> 
+    <div class="footer">
+        <p>Starsel Service</p>
+    </div>
+</body>
+</html>
